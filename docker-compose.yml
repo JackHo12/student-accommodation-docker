@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  student-checker:
+    build: .
+    container_name: student-checker
+    restart: always
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+      CHECK_URL: ${CHECK_URL}
