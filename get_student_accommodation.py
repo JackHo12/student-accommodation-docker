@@ -26,7 +26,7 @@ while True:
         print("Offers available:", value)
 
         if value > 0:
-            message = f"{value} are available now!"
+            message = f"{value} are available now!\n{URL}"
             api_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
             data = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
             response = requests.post(api_url, data=data)
