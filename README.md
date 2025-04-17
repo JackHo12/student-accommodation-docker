@@ -10,7 +10,7 @@ TELEGRAM_BOT_TOKEN=REPLAEC WITH YOUR TELEGRAM BOT TOKEN
 TELEGRAM_CHAT_ID=REPLACE WITH YOUR TELEGRAM CHAT ID
 CHECK_URL=https://www.studentbostader.se/en/find-apartments/search-apartments
 ```
-run it:
+run:
 ```bash
 docker-compose up -d
 
