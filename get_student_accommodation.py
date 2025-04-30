@@ -1,13 +1,21 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-import os, time, requests, json
+import os, time, requests, re
 
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CHROMEDRIVER_PATH = os.getenv("CHROMEDRIVER_PATH", "/usr/local/bin/chromedriver")
 
-URL = os.getenv("CHECK_URL")
+URL = os.getenv("CHECK_URL", 'https://www.studentbostader.se/en/find-apartments/search-apartments/?sortering=hyra')
+
+RENT_PRICE = int(os.getenv("PRICE_LIMIT", 8000))
+
+def send_telegram_message(message):
+    api_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    data = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
+    response = requests.post(api_url, data=data)
+    return response.json().get("ok", False)
 
 while True:
     try:
@@ -26,13 +34,24 @@ while True:
         print("Offers available:", value)
 
         if value > 0:
-            message = f"{value} are available now!\n{URL}"
-            api_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-            data = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
-            response = requests.post(api_url, data=data)
+            # 统计价格小于 7000 kr 的房源数量
+            price_elements = driver.find_elements(By.CSS_SELECTOR, "div.ObjektHyra")
+            affordable_count = 0
+            for el in price_elements:
+                price_text = el.text
+                cleaned = re.sub(r"[^\d]", "", price_text)
+                if cleaned.isdigit():
+                    price = int(cleaned)
+                    if price < RENT_PRICE:
+                        affordable_count += 1
 
-            if response.json().get("ok"):
-                print("Notification sent to Telegram.")
+            print("Affordable (<", RENT_PRICE,"kr) listings:", affordable_count)
+
+            message = f"{value} are available now!\n"
+            if affordable_count > 0:
+                message += f"{affordable_count} are affordable (<{RENT_PRICE}kr) listings.\n{URL}"
+                if send_telegram_message(message):
+                    print("Notification sent to Telegram.")
 
         driver.quit()
 

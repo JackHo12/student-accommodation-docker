@@ -9,6 +9,7 @@ This is an optimization for the [Prophet-Barnes/Accommodation-Direct-Monitor](ht
 TELEGRAM_BOT_TOKEN=REPLAEC WITH YOUR TELEGRAM BOT TOKEN
 TELEGRAM_CHAT_ID=REPLACE WITH YOUR TELEGRAM CHAT ID
 CHECK_URL=https://www.studentbostader.se/en/find-apartments/search-apartments
+PRICE_LIMIT=8000
 ```
 run:
 ```bash
