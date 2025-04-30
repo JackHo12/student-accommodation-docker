@@ -11,6 +11,7 @@ URL = os.getenv("CHECK_URL", 'https://www.studentbostader.se/en/find-apartments/
 
 RENT_PRICE = int(os.getenv("PRICE_LIMIT", 8000))
 
+# Function to send a message to Telegram
 def send_telegram_message(message):
     api_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     data = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
@@ -33,8 +34,9 @@ while True:
         value = int(element.text)
         print("Offers available:", value)
 
+        # If there are available listings, check the price
         if value > 0:
-            # 统计价格小于 7000 kr 的房源数量
+            # Count the number of listings with a price less than RENT_PRICE kr.
             price_elements = driver.find_elements(By.CSS_SELECTOR, "div.ObjektHyra")
             affordable_count = 0
             for el in price_elements:
