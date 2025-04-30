@@ -10,3 +10,5 @@ services:
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       CHECK_URL: ${CHECK_URL}
       PRICE_LIMIT: ${PRICE_LIMIT}
+    volumes:
+      - ./get_student_accommodation.py:/app/get_student_accommodation.py
