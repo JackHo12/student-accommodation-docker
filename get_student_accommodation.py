@@ -49,11 +49,9 @@ while True:
 
             print("Affordable (<", RENT_PRICE,"kr) listings:", affordable_count)
 
-            message = f"{value} are available now!\n"
-            if affordable_count > 0:
-                message += f"{affordable_count} are affordable (<{RENT_PRICE}kr) listings.\n{URL}"
-                if send_telegram_message(message):
-                    print("Notification sent to Telegram.")
+            message = f"{value} are available now!\n {affordable_count} are affordable (<{RENT_PRICE}kr) listings.\n{URL}"
+            if send_telegram_message(message):
+                print("Notification sent to Telegram.")
 
         driver.quit()
 
