@@ -27,7 +27,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY get_student_accommodation.py .
+# COPY get_student_accommodation.py .
 
 # Start the application
 CMD ["python", "get_student_accommodation.py"]

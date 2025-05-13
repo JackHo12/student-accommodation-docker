@@ -1,7 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from dotenv import load_dotenv
 import os, time, requests, re
+
+# Load environment variables from .env file
+load_dotenv()
 
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -48,14 +52,16 @@ while True:
                         affordable_count += 1
 
             print("Affordable (<", RENT_PRICE,"kr) listings:", affordable_count)
-
-            message = f"{value} are available now!\n {affordable_count} are affordable (<{RENT_PRICE}kr) listings.\n{URL}"
-            if send_telegram_message(message):
-                print("Notification sent to Telegram.")
+            if affordable_count > 0:
+                print("Affordable listings found, sending notification.")
+                # Send a message to Telegram
+                message = f"{value} are available now!\n {affordable_count} are affordable (<{RENT_PRICE}kr) listings.\n{URL}"
+                if send_telegram_message(message):
+                    print("Notification sent to Telegram.")
 
         driver.quit()
 
     except Exception as e:
         print("An error occurred:", e)
 
-    time.sleep(180)
+    time.sleep(120)

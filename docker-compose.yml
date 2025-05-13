@@ -11,4 +11,6 @@ services:
       CHECK_URL: ${CHECK_URL}
       PRICE_LIMIT: ${PRICE_LIMIT}
     volumes:
-      - ./get_student_accommodation.py:/app/get_student_accommodation.py
+      # - ./get_student_accommodation.py:/app/get_student_accommodation.py
+      - .:/app
+      - .env:/app/.env
